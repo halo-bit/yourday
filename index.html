@@ -3,45 +3,101 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Birthday Surprise 🎂</title>
+<title>Happy Birthday 🎂</title>
 
 <style>
 
 body{
-margin:0;
-font-family:Arial;
-text-align:center;
-background:linear-gradient(135deg,#ff758c,#ff7eb3);
-color:white;
+    margin:0;
+    font-family:Arial;
+    text-align:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    color:white;
+    overflow-x:hidden;
 }
 
-.container{
-margin-top:120px;
+/* Countdown Screen */
+#countdownBox{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#ff758c;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+font-size:35px;
+z-index:9999;
 }
 
+/* Judul */
 h1{
-font-size:55px;
+    margin-top:60px;
+    font-size:55px;
 }
 
-.countdown{
-font-size:40px;
-margin-top:30px;
+/* Pesan */
+.message{
+    width:70%;
+    margin:auto;
+    font-size:22px;
+    line-height:1.6;
 }
 
-.hidden{
-display:none;
+/* Kue */
+.cake{
+    font-size:120px;
+    margin-top:30px;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-/* tombol */
+.cake:hover{
+    transform:scale(1.1);
+}
+
+/* Tombol */
 button{
-padding:12px 25px;
-font-size:18px;
-border:none;
-border-radius:10px;
-background:white;
-color:#ff4d79;
-cursor:pointer;
-margin-top:25px;
+    padding:12px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    background:white;
+    color:#ff4d79;
+    cursor:pointer;
+    margin-top:25px;
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+/* Galeri */
+.gallery img{
+    width:200px;
+    border-radius:15px;
+    margin:10px;
+    transition:0.3s;
+}
+
+.gallery img:hover{
+    transform:scale(1.1);
+}
+
+/* Confetti */
+.confetti{
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:white;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    from{transform:translateY(-100vh);}
+    to{transform:translateY(100vh);}
 }
 
 </style>
@@ -50,31 +106,45 @@ margin-top:25px;
 
 <body>
 
-<div id="countdownPage" class="container">
+<!-- COUNTDOWN SCREEN -->
+
+<div id="countdownBox">
 
 <h1>🎁 Surprise Sedang Disiapkan</h1>
 
-<p>Halaman ini akan terbuka saat hari ulang tahun 🎂</p>
+<p>Halaman akan terbuka saat hari ulang tahun 🎂</p>
 
-<div class="countdown" id="timer"></div>
+<div id="countdownTimer"></div>
 
 </div>
 
-<div id="birthdayPage" class="container hidden">
+<!-- WEBSITE UTAMA -->
 
 <h1>🎉 Selamat Ulang Tahun! 🎂</h1>
 
-<p style="font-size:22px;width:70%;margin:auto;">
+<p class="message">
 Semoga di hari spesial ini kamu selalu diberikan kesehatan,
 kebahagiaan, dan semua impianmu bisa tercapai.  
 Terima kasih sudah menjadi orang yang luar biasa dalam hidupku. ✨
 </p>
 
-<br>
+<div class="cake" onclick="blowCandle()">
+🎂
+</div>
+
+<p>Buka pesan lalu tiup lilinnya 🎂</p>
 
 <button onclick="showMessage()">Buka Pesan Spesial 💌</button>
 
 <br><br>
+
+<div class="gallery">
+<h2>Ini Kamu 📸</h2>
+
+<img src="foto1.jpg">
+<img src="foto2.jpg">
+
+</div>
 
 <button onclick="playMusic()">Play Music 🎵</button>
 
@@ -82,38 +152,35 @@ Terima kasih sudah menjadi orang yang luar biasa dalam hidupku. ✨
 <source src="music1.mp3" type="audio/mpeg">
 </audio>
 
-</div>
-
 <script>
 
-/* =========================
-   UBAH TANGGAL DI SINI
-========================= */
+/* ======================
+   TANGGAL ULANG TAHUN
+   UBAH DI SINI
+====================== */
 
-let birthdayDate = new Date("2026-03-24 00:00:00").getTime();
+let birthday = new Date("2026-03-15 00:00:00").getTime();
 
-/* countdown */
+/* COUNTDOWN */
 
-let timer = setInterval(function(){
+let countdownFunction = setInterval(function(){
 
 let now = new Date().getTime();
+let distance = birthday - now;
 
-let distance = birthdayDate - now;
+let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-let days = Math.floor(distance / (1000*60*60*24));
-let hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-let minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
-let seconds = Math.floor((distance % (1000*60)) / 1000);
-
-document.getElementById("timer").innerHTML =
+document.getElementById("countdownTimer").innerHTML =
 days + " Hari " + hours + " Jam " + minutes + " Menit " + seconds + " Detik";
 
 if(distance < 0){
 
-clearInterval(timer);
+clearInterval(countdownFunction);
 
-document.getElementById("countdownPage").style.display="none";
-document.getElementById("birthdayPage").style.display="block";
+document.getElementById("countdownBox").style.display="none";
 
 }
 
@@ -122,13 +189,36 @@ document.getElementById("birthdayPage").style.display="block";
 /* musik */
 
 function playMusic(){
-document.getElementById("bgmusic").play();
+let music=document.getElementById("bgmusic");
+music.play();
 }
 
-/* pesan */
+/* pesan spesial */
 
 function showMessage(){
-alert("🎉 Selamat ulang tahun! Semoga semua harapanmu tercapai 🎂");
+alert(`🎉 Selamat Ulang Tahun, Bu Bos yang Paling Berisik!
+
+Selamat ulang tahun, Sayang. Hari ini adalah hari di mana dunia harus berterima kasih karena telah menghadirkan satu manusia paling unik dan menggemaskan sepertimu.
+
+Menghadapi kamu itu seperti roller coaster tanpa sabuk pengaman. Sifat kekanak-kanakanmu sering membuatku geleng kepala, tapi justru itu yang membuat hidupku tidak pernah membosankan.
+
+Jangan pernah berhenti bicara ya... lanjutannya ada di kue 🎂`);
+}
+
+/* confetti */
+
+for(let i=0;i<120;i++){
+let confetti=document.createElement("div");
+confetti.className="confetti";
+confetti.style.left=Math.random()*100+"vw";
+confetti.style.animationDuration=(3+Math.random()*5)+"s";
+document.body.appendChild(confetti);
+}
+
+/* tiup lilin */
+
+function blowCandle(){
+alert("✨ ...karena setiap kata yang keluar dari mulutmu adalah melodi yang paling aku sukai. ✨");
 }
 
 </script>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Birthday Surprise 🎂</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+color:white;
+}
+
+.container{
+margin-top:120px;
+}
+
+h1{
+font-size:55px;
+}
+
+.countdown{
+font-size:40px;
+margin-top:30px;
+}
+
+.hidden{
+display:none;
+}
+
+/* tombol */
+button{
+padding:12px 25px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:white;
+color:#ff4d79;
+cursor:pointer;
+margin-top:25px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="countdownPage" class="container">
+
+<h1>🎁 Surprise Sedang Disiapkan</h1>
+
+<p>Halaman ini akan terbuka saat hari ulang tahun 🎂</p>
+
+<div class="countdown" id="timer"></div>
+
+</div>
+
+<div id="birthdayPage" class="container hidden">
+
+<h1>🎉 Selamat Ulang Tahun! 🎂</h1>
+
+<p style="font-size:22px;width:70%;margin:auto;">
+Semoga di hari spesial ini kamu selalu diberikan kesehatan,
+kebahagiaan, dan semua impianmu bisa tercapai.  
+Terima kasih sudah menjadi orang yang luar biasa dalam hidupku. ✨
+</p>
+
+<br>
+
+<button onclick="showMessage()">Buka Pesan Spesial 💌</button>
+
+<br><br>
+
+<button onclick="playMusic()">Play Music 🎵</button>
+
+<audio id="bgmusic" loop>
+<source src="music1.mp3" type="audio/mpeg">
+</audio>
+
+</div>
+
+<script>
+
+/* =========================
+   UBAH TANGGAL DI SINI
+========================= */
+
+let birthdayDate = new Date("2026-03-24 00:00:00").getTime();
+
+/* countdown */
+
+let timer = setInterval(function(){
+
+let now = new Date().getTime();
+
+let distance = birthdayDate - now;
+
+let days = Math.floor(distance / (1000*60*60*24));
+let hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+let minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+let seconds = Math.floor((distance % (1000*60)) / 1000);
+
+document.getElementById("timer").innerHTML =
+days + " Hari " + hours + " Jam " + minutes + " Menit " + seconds + " Detik";
+
+if(distance < 0){
+
+clearInterval(timer);
+
+document.getElementById("countdownPage").style.display="none";
+document.getElementById("birthdayPage").style.display="block";
+
+}
+
+},1000);
+
+/* musik */
+
+function playMusic(){
+document.getElementById("bgmusic").play();
+}
+
+/* pesan */
+
+function showMessage(){
+alert("🎉 Selamat ulang tahun! Semoga semua harapanmu tercapai 🎂");
+}
+
+</script>
+
+</body>
+</html>
